@@ -1,5 +1,5 @@
 angular.module('img-src-ondemand', [])
-.factory('ImgSrcOndemand', function($window, $timeout) {
+.factory('ImgSrcOndemand', ['$window', function($window) {
   var service = {
     buffer: {},
     listening: false,
@@ -60,8 +60,8 @@ angular.module('img-src-ondemand', [])
   };
 
   return service;
-})
-.directive('srcVarOndemand', function($parse, ImgSrcOndemand) {
+}])
+.directive('srcVarOndemand', ['$parse', 'ImgSrcOndemand', function($parse, ImgSrcOndemand) {
   return {
     restrict: 'A',
     scope: false,
@@ -69,8 +69,8 @@ angular.module('img-src-ondemand', [])
       ImgSrcOndemand.register($parse(attrs.srcVarOndemand)(scope), elem);
     }
   };
-})
-.directive('srcOndemand', function(ImgSrcOndemand) {
+}])
+.directive('srcOndemand', ['ImgSrcOndemand', function(ImgSrcOndemand) {
   return {
     restrict: 'A',
     scope: false,
@@ -78,4 +78,4 @@ angular.module('img-src-ondemand', [])
       ImgSrcOndemand.register(attrs.srcOndemand, elem);
     }
   };
-});
+}]);
