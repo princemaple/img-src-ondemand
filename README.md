@@ -1,6 +1,9 @@
 # img-src-ondemand
 
-Angular module that delays image loading to when it is about to appear on the screen
+Angular module that delays image loading to when it is about to appear on the screen.
+
+To be more specific, it sets the `src` attribute on `img` tags just before you scroll
+down to make it appear on the screen.
 
 ## Usage
 
