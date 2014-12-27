@@ -66,10 +66,10 @@ angular.module('img-src-ondemand', [])
     restrict: 'A',
     scope: false,
     link: function(scope, elem, attrs) {
-      ImgSrcOndemand.register($parse(attrs.srcOndemand)(scope), elem);
+      ImgSrcOndemand.register($parse(attrs.srcVarOndemand)(scope), elem);
     }
   };
-}).
+})
 .directive('srcOndemand', function(ImgSrcOndemand) {
   return {
     restrict: 'A',
