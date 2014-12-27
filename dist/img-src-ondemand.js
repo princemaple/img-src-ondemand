@@ -10,10 +10,10 @@ angular.module('img-src-ondemand', [])
     },
     listening: false,
     listener: _.throttle(function() {
-      var screenTop = service.screenTop();
+      var screenEdge = service.screenEdge();
       _(service.buffer).each(function(elem, url, buffer){
-        if (elem.offsetTop < screenTop) {
-          elem.src = url;
+        if (elem.offset().top < screenEdge) {
+          elem.attr('src', url);
           delete buffer[url];
         }
       });
@@ -21,12 +21,12 @@ angular.module('img-src-ondemand', [])
         $timeout(function() { $($window).off('scroll'); });
       }
     }, 120),
-    screenTop: function() {
+    screenEdge: function() {
       return $window.pageYOffset + $window.innerHeight;
     },
     register: function(url, elem) {
-      var screenTop = service.screenTop();
-      if (elem.offsetTop < screenTop) {
+      var screenEdge = service.screenEdge();
+      if (elem.offset().top < screenEdge) {
         return (elem.src = url);
       }
 
@@ -42,7 +42,7 @@ angular.module('img-src-ondemand', [])
     restrict: 'A',
     scope: false,
     link: function(scope, elem, attrs) {
-      ImgSrcOndemand.register(attrs.srcOndemand, elem[0]);
+      ImgSrcOndemand.register(attrs.srcOndemand, elem);
     }
   };
 });
