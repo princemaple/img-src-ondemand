@@ -1,0 +1,33 @@
+{
+	"name": "img-src-ondemand",
+	"version": "1.0.0",
+	"authors": [
+		"Po Chen <chenpaul914@gmail.com>"
+	],
+	"description": "Image loading ondemand",
+	"main": [
+		"./dist/img-src-ondemand.js"
+	],
+	"keywords": [
+		"angular",
+		"AngularJS",
+		"img",
+		"src",
+		"ondemand",
+		"performance"
+	],
+	"license": "MIT",
+	"ignore": [
+		"**/.*",
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests"
+	],
+	"dependencies": {
+		"angular": "> 1.2.0 < 2.0",
+		"jquery": "> 1.10.0",
+		"lodash": "> 2.0.0 < 3.0"
+	},
+	"devDependencies": {}
+}
