@@ -7,7 +7,7 @@ angular.module('img-src-ondemand', [])
     listen: function() {
       if (this.listening) { return; }
 
-      $($window).on('scroll', this.listener);
+      angular.element($window).on('scroll', this.listener);
       this.listening = true;
     },
 
@@ -32,7 +32,7 @@ angular.module('img-src-ondemand', [])
       });
 
       if (_.isEmpty(service.buffer)) {
-        $($window).off('scroll');
+        angular.element($window).off('scroll');
         service.listening = false;
       }
     }, 120),
