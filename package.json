@@ -1,0 +1,28 @@
+{
+  "name": "img-src-ondemand",
+  "version": "1.2.3",
+  "description": "Angular module that delays image loading to when it is about to appear on the screen.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/princemaple/img-src-ondemand.git"
+  },
+  "keywords": [
+    "angular",
+    "performance",
+    "img",
+    "src",
+    "AngularJS"
+  ],
+  "author": "Po Chen <chenpaul914@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/princemaple/img-src-ondemand/issues"
+  },
+  "homepage": "https://github.com/princemaple/img-src-ondemand",
+  "devDependencies": {
+    "gulp-concat": "^2.4.3"
+  }
+}
