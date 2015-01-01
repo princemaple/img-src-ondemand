@@ -1,5 +1,5 @@
 angular.module('img-src-ondemand', [])
-.factory('ImgSrcOndemand', ["$window", "offsetFn", "screenEdgeFn", function($window, offsetFn, screenEdgeFn) {
+.factory('ImgSrcOndemand', ["$window", "offsetFn", "screenEdgeFn", "throttleFn", function($window, offsetFn, screenEdgeFn, throttleFn) {
   var service = {
     buffer: {},
     listening: false,
@@ -11,7 +11,7 @@ angular.module('img-src-ondemand', [])
       this.listening = true;
     },
 
-    listener: _.throttle(function() {
+    listener: throttleFn(function() {
       var screenEdge = screenEdgeFn();
 
       angular.forEach(service.buffer, function(elems, url, buffer){
@@ -100,3 +100,21 @@ angular.module('img-src-ondemand')
     return $window.pageYOffset + $window.innerHeight;
   };
 }]);
+
+angular.module('img-src-ondemand')
+.factory('throttleFn', function() {
+  return function throttleFn(func, delay){
+    var last = 0;
+
+    return function(){
+      var args = arguments,
+          self = this,
+          now  = +(new Date());
+
+      if (now >= last + delay) {
+        last = now;
+        func.apply(self, args);
+      }
+    };
+  };
+});

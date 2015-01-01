@@ -1,5 +1,5 @@
 angular.module('img-src-ondemand', [])
-.factory('ImgSrcOndemand', function($window, offsetFn, screenEdgeFn) {
+.factory('ImgSrcOndemand', function($window, offsetFn, screenEdgeFn, throttleFn) {
   var service = {
     buffer: {},
     listening: false,
@@ -11,7 +11,7 @@ angular.module('img-src-ondemand', [])
       this.listening = true;
     },
 
-    listener: _.throttle(function() {
+    listener: throttleFn(function() {
       var screenEdge = screenEdgeFn();
 
       angular.forEach(service.buffer, function(elems, url, buffer){
