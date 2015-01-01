@@ -1,5 +1,5 @@
 angular.module('img-src-ondemand', [])
-.factory('ImgSrcOndemand', ["$window", "offsetFn", "screenEdgeFn", "throttleFn", function($window, offsetFn, screenEdgeFn, throttleFn) {
+.factory('ImgSrcOndemand', function($window, offsetFn, screenEdgeFn, throttleFn) {
   var service = {
     buffer: {},
     listening: false,
@@ -57,8 +57,8 @@ angular.module('img-src-ondemand', [])
   };
 
   return service;
-}])
-.directive('srcVarOndemand', ["$parse", "ImgSrcOndemand", function($parse, ImgSrcOndemand) {
+})
+.directive('srcVarOndemand', function($parse, ImgSrcOndemand) {
   return {
     restrict: 'A',
     scope: false,
@@ -66,8 +66,8 @@ angular.module('img-src-ondemand', [])
       ImgSrcOndemand.register($parse(attrs.srcVarOndemand)(scope), elem);
     }
   };
-}])
-.directive('srcOndemand', ["ImgSrcOndemand", function(ImgSrcOndemand) {
+})
+.directive('srcOndemand', function(ImgSrcOndemand) {
   return {
     restrict: 'A',
     scope: false,
@@ -75,53 +75,4 @@ angular.module('img-src-ondemand', [])
       ImgSrcOndemand.register(attrs.srcOndemand, elem);
     }
   };
-}]);
-
-angular.module('img-src-ondemand')
-.factory('offsetFn', ["$window", function($window) {
-  return function(rawElem) {
-    var top = 0, left = 0;
-    do {
-      top += rawElem.offsetTop  || 0;
-      left += rawElem.offsetLeft || 0;
-      rawElem = rawElem.offsetParent;
-    } while(rawElem);
-
-    return {
-      top: top,
-      left: left
-    };
-  };
-}]);
-
-angular.module('img-src-ondemand')
-.factory('screenEdgeFn', ["$window", function($window) {
-  return function() {
-    return $window.pageYOffset + $window.innerHeight;
-  };
-}]);
-
-angular.module('img-src-ondemand')
-.factory('throttleFn', ["$timeout", function($timeout) {
-  return function(fn, delay) {
-    var job, last = 0;
-
-    return function() {
-      var args = arguments,
-          self = this,
-          time = +(new Date()),
-          func = function() {
-            last = time;
-            fn.apply(self, args);
-          };
-
-      $timeout.cancel(job);
-
-      if (time >= last + delay) {
-        func();
-      } else {
-        job = $timeout(func, delay, false);
-      }
-    };
-  };
-}]);
+});
