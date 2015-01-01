@@ -7,3 +7,9 @@ gulp.task('concat', function() {
     .pipe(concat('img-src-ondemand.js'))
     .pipe(gulp.dest('dist'));
 });
+
+gulp.task('watch', function() {
+  gulp.watch('src/**/*.js', ['concat']);
+});
+
+gulp.task('default', ['concat']);
