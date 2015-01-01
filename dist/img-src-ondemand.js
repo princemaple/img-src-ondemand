@@ -1,5 +1,5 @@
 angular.module('img-src-ondemand', [])
-.factory('ImgSrcOndemand', ['$window', function($window) {
+.factory('ImgSrcOndemand', ["$window", "offsetFn", "screenEdgeFn", function($window, offsetFn, screenEdgeFn) {
   var service = {
     buffer: {},
     listening: false,
@@ -12,20 +12,24 @@ angular.module('img-src-ondemand', [])
     },
 
     listener: _.throttle(function() {
-      var screenEdge = service.screenEdge();
+      var screenEdge = screenEdgeFn();
 
       angular.forEach(service.buffer, function(elems, url, buffer){
         var seen = false;
+
         angular.forEach(elems, function(elem) {
-          if (elem.offset().top < screenEdge || seen) {
-            elem.attr('src', url);
+          if (offsetFn(elem[0]).top < screenEdge) {
             seen = true;
           }
         });
 
-        if (seen) {
-          delete buffer[url];
-        }
+        if (!seen) { return; }
+
+        angular.forEach(elems, function(elem) {
+          elem.attr('src', url);
+        });
+
+        delete buffer[url];
       });
 
       if (!Object.keys(service.buffer).length) {
@@ -34,19 +38,15 @@ angular.module('img-src-ondemand', [])
       }
     }, 120),
 
-    screenEdge: function() {
-      return $window.pageYOffset + $window.innerHeight;
-    },
-
     register: function(url, elem) {
-      var elemTop = elem.offset().top,
-          screenEdge = service.screenEdge();
+      var elemTop = offsetFn(elem[0]).top,
+          elems;
 
-      if (elemTop < screenEdge) {
+      if (elemTop < screenEdgeFn()) {
         return (elem.attr('src', url));
       }
 
-      var elems = this.buffer[url];
+      elems = this.buffer[url];
       if (elems) {
         elems.push(elem);
       } else {
@@ -58,7 +58,7 @@ angular.module('img-src-ondemand', [])
 
   return service;
 }])
-.directive('srcVarOndemand', ['$parse', 'ImgSrcOndemand', function($parse, ImgSrcOndemand) {
+.directive('srcVarOndemand', ["$parse", "ImgSrcOndemand", function($parse, ImgSrcOndemand) {
   return {
     restrict: 'A',
     scope: false,
@@ -67,12 +67,36 @@ angular.module('img-src-ondemand', [])
     }
   };
 }])
-.directive('srcOndemand', ['ImgSrcOndemand', function(ImgSrcOndemand) {
+.directive('srcOndemand', ["ImgSrcOndemand", function(ImgSrcOndemand) {
   return {
     restrict: 'A',
     scope: false,
     link: function(scope, elem, attrs) {
       ImgSrcOndemand.register(attrs.srcOndemand, elem);
     }
+  };
+}]);
+
+angular.module('img-src-ondemand')
+.factory('offsetFn', ["$window", function($window) {
+  return function(rawElem) {
+    var top = 0, left = 0;
+    do {
+      top += rawElem.offsetTop  || 0;
+      left += rawElem.offsetLeft || 0;
+      rawElem = rawElem.offsetParent;
+    } while(rawElem);
+
+    return {
+      top: top,
+      left: left
+    };
+  };
+}]);
+
+angular.module('img-src-ondemand')
+.factory('screenEdgeFn', ["$window", function($window) {
+  return function() {
+    return $window.pageYOffset + $window.innerHeight;
   };
 }]);

@@ -12,5 +12,5 @@ angular.module('img-src-ondemand')
       top: top,
       left: left
     };
-  }
+  };
 });
