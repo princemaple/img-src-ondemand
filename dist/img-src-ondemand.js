@@ -14,19 +14,16 @@ angular.module('img-src-ondemand', [])
     listener: _.throttle(function() {
       var screenEdge = service.screenEdge();
 
-      _(service.buffer).each(function(elems, url, buffer){
-        _(elems).each(function(elem, index, array) {
-          if (!elem) { return; }
-
-          if (elem.offset().top < screenEdge) {
+      angular.forEach(service.buffer, function(elems, url, buffer){
+        var seen = false;
+        angular.forEach(elems, function(elem) {
+          if (elem.offset().top < screenEdge || seen) {
             elem.attr('src', url);
-            array[index] = null;
+            seen = true;
           }
         });
 
-        buffer[url] = _.compact(buffer[url]);
-
-        if (_.isEmpty(buffer[url])) {
+        if (seen) {
           delete buffer[url];
         }
       });
