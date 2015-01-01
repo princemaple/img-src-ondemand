@@ -28,7 +28,7 @@ angular.module('img-src-ondemand', [])
         }
       });
 
-      if (_.isEmpty(service.buffer)) {
+      if (!Object.keys(service.buffer).length) {
         angular.element($window).off('scroll');
         service.listening = false;
       }
