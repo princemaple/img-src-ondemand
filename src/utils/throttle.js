@@ -1,16 +1,23 @@
 angular.module('img-src-ondemand')
-.factory('throttleFn', function() {
-  return function throttleFn(func, delay){
-    var last = 0;
+.factory('throttleFn', function($timeout) {
+  return function(fn, delay) {
+    var job, last = 0;
 
-    return function(){
+    return function() {
       var args = arguments,
           self = this,
-          now  = +(new Date());
+          time = +(new Date()),
+          func = function() {
+            last = time;
+            fn.apply(self, args);
+          };
 
-      if (now >= last + delay) {
-        last = now;
-        func.apply(self, args);
+      $timeout.cancel(job);
+
+      if (time >= last + delay) {
+        func();
+      } else {
+        job = $timeout(func, delay, false);
       }
     };
   };
