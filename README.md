@@ -12,6 +12,7 @@ down to make it appear on the screen.
 
 <!-- MarkdownTOC depth=0 -->
 
+- [Dependency](#dependency)
 - [Usage](#usage)
     - [Include module](#include-module)
     - [Use it](#use-it)
@@ -21,6 +22,11 @@ down to make it appear on the screen.
 
 <!-- /MarkdownTOC -->
 
+## Dependency
+
+Starting from 1.3, `angular` is the only dependency of this package.
+It used to require `jQuery` and `lodash` in `<1.3`.
+I do plan to have them as optional dependency though, to allow IE8 support.
 
 ## Usage
 
