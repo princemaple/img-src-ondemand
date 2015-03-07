@@ -17,7 +17,7 @@ gulp.task('compile', function() {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('watch', function() {
+gulp.task('watch', ['compile'], function() {
   gulp.watch('src/**/*.js', ['lint', 'compile']);
 });
 
