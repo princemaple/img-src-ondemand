@@ -12,7 +12,8 @@ down to make it appear on the screen.
 
 <!-- MarkdownTOC depth=0 -->
 
-- [Dependency](#dependency)
+- [Changelog](#changelog)
+    - [Dependency](#dependency)
 - [Usage](#usage)
     - [Include module](#include-module)
     - [Use it](#use-it)
@@ -22,7 +23,11 @@ down to make it appear on the screen.
 
 <!-- /MarkdownTOC -->
 
-## Dependency
+## Changelog
+
+* 1.4 added `.update` onto the service so image status check can be called programmatically
+
+### Dependency
 
 Starting from 1.3, `angular` is the only dependency of this package.
 It used to require `jQuery` and `lodash` in `<1.3`.
