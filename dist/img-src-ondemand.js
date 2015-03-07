@@ -11,7 +11,7 @@ angular.module('img-src-ondemand', [])
       this.listening = true;
     },
 
-    listener: throttleFn(function() {
+    update: function() {
       var screenEdge = screenEdgeFn();
 
       angular.forEach(service.buffer, function(elems, url, buffer){
@@ -36,7 +36,7 @@ angular.module('img-src-ondemand', [])
         angular.element($window).off('scroll');
         service.listening = false;
       }
-    }, 120),
+    },
 
     register: function(url, elem) {
       var elemTop = offsetFn(elem[0]).top,
@@ -55,6 +55,8 @@ angular.module('img-src-ondemand', [])
       this.listen();
     }
   };
+
+  service.listener = throttleFn(service.update, 120);
 
   return service;
 }])
