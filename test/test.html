@@ -9,9 +9,7 @@
     <script>
       angular.module('demo', ['img-src-ondemand'])
       .config(function(ImgSrcOndemandProvider) {
-        console.log(ImgSrcOndemandProvider.offset());
         ImgSrcOndemandProvider.offset(500);
-        console.log(ImgSrcOndemandProvider.offset());
       })
       .run(function($document) {
         for (var i = 20; i > 0; --i) {
