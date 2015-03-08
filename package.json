@@ -1,6 +1,6 @@
 {
   "name": "img-src-ondemand",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Angular module that delays image loading to when it is about to appear on the screen.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
