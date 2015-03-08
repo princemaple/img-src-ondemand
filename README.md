@@ -25,6 +25,16 @@ down to make it appear on the screen.
 
 ## Changelog
 
+* 1.5 extracted the factory into a provider, so you can set an offset to preload images
+
+```js
+app.config(['ImgSrcOndemandProvider', function(ImgSrcOndemandProvider) {
+  ImgSrcOndemandProvider.offset(500);
+}]);
+```
+
+More details can be found at [#1](https://github.com/princemaple/img-src-ondemand/issues/1)
+
 * 1.4 added `.update` onto the service so image status check can be called programmatically
 
 ### Dependency
