@@ -8,6 +8,11 @@
     <script src="../dist/img-src-ondemand.js"></script>
     <script>
       angular.module('demo', ['img-src-ondemand'])
+      .config(function(ImgSrcOndemandProvider) {
+        console.log(ImgSrcOndemandProvider.offset());
+        ImgSrcOndemandProvider.offset(500);
+        console.log(ImgSrcOndemandProvider.offset());
+      })
       .run(function($document) {
         for (var i = 20; i > 0; --i) {
           var m = Math.random() * 500 >> 0,

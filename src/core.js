@@ -1,64 +1,78 @@
 angular.module('img-src-ondemand', [])
-.factory('ImgSrcOndemand', function($window, offsetFn, screenEdgeFn, throttleFn) {
-  var service = {
-    buffer: {},
-    listening: false,
+.provider('ImgSrcOndemand', function() {
+  var offset = 0;
 
-    listen: function() {
-      if (this.listening) { return; }
-
-      angular.element($window).on('scroll', this.listener);
-      this.listening = true;
-    },
-
-    update: function() {
-      var screenEdge = screenEdgeFn();
-
-      angular.forEach(service.buffer, function(elems, url, buffer){
-        var seen = false;
-
-        angular.forEach(elems, function(elem) {
-          if (offsetFn(elem[0]).top < screenEdge) {
-            seen = true;
-          }
-        });
-
-        if (!seen) { return; }
-
-        angular.forEach(elems, function(elem) {
-          elem.attr('src', url);
-        });
-
-        delete buffer[url];
-      });
-
-      if (!Object.keys(service.buffer).length) {
-        angular.element($window).off('scroll');
-        service.listening = false;
-      }
-    },
-
-    register: function(url, elem) {
-      var elemTop = offsetFn(elem[0]).top,
-          elems;
-
-      if (elemTop < screenEdgeFn()) {
-        return (elem.attr('src', url));
-      }
-
-      elems = this.buffer[url];
-      if (elems) {
-        elems.push(elem);
-      } else {
-        this.buffer[url] = [elem];
-      }
-      this.listen();
+  this.offset = function(customOffset) {
+    if (angular.isUndefined(customOffset)) {
+      return offset;
+    } else if (angular.isNumber(customOffset)) {
+      offset = customOffset;
     }
   };
 
-  service.listener = throttleFn(service.update, 120);
+  this.$get = function($window, offsetFn, screenEdgeFn, throttleFn) {
+    var initialScreenEdge = screenEdgeFn();
 
-  return service;
+    var service = {
+      buffer: {},
+      listening: false,
+
+      listen: function() {
+        if (this.listening) { return; }
+
+        angular.element($window).on('scroll', this.listener);
+        this.listening = true;
+      },
+
+      update: function() {
+        var screenEdge = screenEdgeFn() + offset;
+
+        angular.forEach(service.buffer, function(elems, url, buffer){
+          var seen = false;
+
+          angular.forEach(elems, function(elem) {
+            if (offsetFn(elem[0]).top < screenEdge) {
+              seen = true;
+            }
+          });
+
+          if (!seen) { return; }
+
+          angular.forEach(elems, function(elem) {
+            elem.attr('src', url);
+          });
+
+          delete buffer[url];
+        });
+
+        if (!Object.keys(service.buffer).length) {
+          angular.element($window).off('scroll');
+          service.listening = false;
+        }
+      },
+
+      register: function(url, elem) {
+        var elemTop = offsetFn(elem[0]).top,
+            elems;
+
+        if (elemTop < initialScreenEdge + offset) {
+          return elem.attr('src', url);
+        }
+
+        elems = this.buffer[url];
+        if (elems) {
+          elems.push(elem);
+        } else {
+          this.buffer[url] = [elem];
+        }
+        this.listen();
+      }
+    };
+
+    service.listener = throttleFn(service.update, 120);
+
+    return service;
+  };
 })
 .directive('srcVarOndemand', function($parse, ImgSrcOndemand) {
   return {
