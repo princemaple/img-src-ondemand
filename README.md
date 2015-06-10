@@ -1,4 +1,6 @@
-# img-src-ondemand [![Bower version](https://badge.fury.io/bo/img-src-ondemand.svg)](http://badge.fury.io/bo/img-src-ondemand)
+# img-src-ondemand
+
+## :warning: I wrote a replacement for this module some time ago, https://github.com/princemaple/scroll-trigger, the new one not only covers all the functionality `img-src-ondemand` provides, it also gives you way more. Hence, this module is no longer maintain, in favor of `scroll-trigger`.
 
 Angular module that delays image loading to when it is about to appear on the screen.
 
